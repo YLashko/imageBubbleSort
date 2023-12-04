@@ -18,9 +18,10 @@ public class UI {
     JFrame frame = new JFrame();
     JTextArea filenameInTextArea = new JTextArea();
     JTextArea filenameOutTextArea = new JTextArea("out.png");
-    JSlider thresholdSlider = new JSlider(0, 150, 10);
+    JSlider thresholdSlider = new JSlider(0, 255, 10);
     JSlider iterSlider = new JSlider(0, 200, 10);
     JSlider modeSlider = new JSlider(0, 4, 0);
+    JSlider multiplierSlider = new JSlider(0, 100, 0);
     JCheckBox reverseSortCheckBox = new JCheckBox("Reverse sort");
     JCheckBox axisCheckBox = new JCheckBox("Change axis");
     JCheckBox reverseDirCheckBox = new JCheckBox("Reverse direction");
@@ -29,6 +30,7 @@ public class UI {
     JTextArea thresholdTextArea = new JTextArea("Threshold: 10");
     JTextArea iterTextArea = new JTextArea("Iterations: 10");
     JTextArea modeTextArea = new JTextArea("Mode: sum");
+    JTextArea multiplierTextArea = new JTextArea("Multiplier: +0%");
 
     JLabel imageLeftHolder = new JLabel();
     JLabel imageRightHolder = new JLabel();
@@ -64,6 +66,10 @@ public class UI {
         iterSlider.addChangeListener(e -> {
             updatePreviewImage();
             iterTextArea.setText("Iterations: " + iterSlider.getValue());
+        });
+        multiplierSlider.addChangeListener(e -> {
+            updatePreviewImage();
+            multiplierTextArea.setText("Multiplier: +" + multiplierSlider.getValue() + "%");
         });
         reverseSortCheckBox.addChangeListener(e -> {
             updatePreviewImage();
@@ -102,6 +108,9 @@ public class UI {
         frame.add(modeSlider);
         frame.add(modeTextArea);
         modeTextArea.setEditable(false);
+        frame.add(multiplierSlider);
+        frame.add(multiplierTextArea);
+        multiplierTextArea.setEditable(false);
         frame.add(imageLeftHolder);
         frame.add(imageRightHolder);
         frame.setSize((int) (52 * scaleFactor), (int) (26 * scaleFactor));
@@ -119,11 +128,13 @@ public class UI {
         iterTextArea.setBounds((int) (14 * scaleFactor), (int) (3 * scaleFactor), (int) (6 * scaleFactor), (int) (1 * scaleFactor));
         modeSlider.setBounds((int) (20 * scaleFactor), 0, (int) (6 * scaleFactor), (int) (3 * scaleFactor));
         modeTextArea.setBounds((int) (20 * scaleFactor), (int) (3 * scaleFactor), (int) (6 * scaleFactor), (int) (1 * scaleFactor));
-        reverseDirCheckBox.setBounds((int) (26 * scaleFactor), 0, (int) (7 * scaleFactor), (int) (2 * scaleFactor));
-        reverseSortCheckBox.setBounds((int) (26 * scaleFactor), (int) (2 * scaleFactor), (int) (7 * scaleFactor), (int) (2 * scaleFactor));
-        axisCheckBox.setBounds((int) (33 * scaleFactor), (int) (2 * scaleFactor), (int) (7 * scaleFactor), (int) (2 * scaleFactor));
-        filenameOutTextArea.setBounds((int) (40 * scaleFactor), 0, (int) (4 * scaleFactor), (int) (4 * scaleFactor));
-        saveToFile.setBounds((int) (44 * scaleFactor), 0, (int) (4 * scaleFactor), (int) (4 * scaleFactor));
+        multiplierSlider.setBounds((int) (26 * scaleFactor), 0, (int) (6 * scaleFactor), (int) (3 * scaleFactor));
+        multiplierTextArea.setBounds((int) (26 * scaleFactor), (int) (3 * scaleFactor), (int) (6 * scaleFactor), (int) (1 * scaleFactor));
+        reverseDirCheckBox.setBounds((int) (32 * scaleFactor), 0, (int) (7 * scaleFactor), (int) (2 * scaleFactor));
+        reverseSortCheckBox.setBounds((int) (32 * scaleFactor), (int) (2 * scaleFactor), (int) (7 * scaleFactor), (int) (2 * scaleFactor));
+        axisCheckBox.setBounds((int) (40 * scaleFactor), (int) (2 * scaleFactor), (int) (6 * scaleFactor), (int) (2 * scaleFactor));
+        filenameOutTextArea.setBounds((int) (40 * scaleFactor), 0, (int) (6 * scaleFactor), (int) (2 * scaleFactor));
+        saveToFile.setBounds((int) (46 * scaleFactor), 0, (int) (4 * scaleFactor), (int) (4 * scaleFactor));
         imageLeftHolder.setBounds(0, (int) (5 * scaleFactor), (int) (imageScaleW * scaleFactor), (int) (imageScaleH * scaleFactor));
         imageRightHolder.setBounds((int) (imageScaleW * scaleFactor), (int) (5 * scaleFactor), (int) (imageScaleW * scaleFactor), (int) (imageScaleH * scaleFactor));
     }
@@ -165,7 +176,8 @@ public class UI {
             reverseSortCheckBox.isSelected(),
             reverseDirCheckBox.isSelected(),
             iter,
-            thresholdSlider.getValue()
+            thresholdSlider.getValue(),
+            multiplierSlider.getValue()
         );
         imageRight = new ImageIcon(previewImage);
         imageRightHolder.setIcon(imageRight);
@@ -181,7 +193,8 @@ public class UI {
             reverseSortCheckBox.isSelected(),
             reverseDirCheckBox.isSelected(),
             iterSlider.getValue(),
-            thresholdSlider.getValue()
+            thresholdSlider.getValue(),
+            multiplierSlider.getValue()
         );
 
         File f = new File(imagesOutFolder + filenameOutTextArea.getText());
